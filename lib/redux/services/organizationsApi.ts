@@ -22,6 +22,8 @@ type PaginatedResponse<T> = {
 	number: number;
 };
 
+type SpecializationResponse<T> = T[];
+
 type CreateOrganizationRequest = {
 	name: string;
 	active: boolean;
@@ -197,6 +199,7 @@ export const organizationsApi = createApi({
 				activeStatus: boolean;
 				enableEmailPdf: boolean;
 				ehrProviderId: string;
+				location: { id: number };
 			}
 		>({
 			query: (provider) => ({
@@ -213,12 +216,13 @@ export const organizationsApi = createApi({
 				id: number;
 				name: string;
 				email: string;
-				phone: string;
+				phone?: string;
 				logo?: { id: number } | null;
 				specialization: { id: number };
 				activeStatus: boolean;
 				enableEmailPdf: boolean;
 				ehrProviderId: string;
+				location: { id: number } | null;
 			}
 		>({
 			query: (provider) => ({
@@ -226,13 +230,13 @@ export const organizationsApi = createApi({
 				method: 'PUT',
 				body: provider,
 			}),
-			invalidatesTags: ['Providers', 'Locations', 'Organizations'],
+			invalidatesTags: ['Providers', 'Organizations'],
 		}),
 		// Provider
 
 		// Specialization
 		getSpecializations: builder.query<
-			ApiResponse<PaginatedResponse<Specialization>>,
+			ApiResponse<SpecializationResponse<Specialization>>,
 			{ page: number; size: number }
 		>({
 			query: ({ page, size }) => `/specialization?page=${page}&size=${size}`,

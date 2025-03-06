@@ -19,7 +19,11 @@ export function LocationProviders({ location }: { location: Location }) {
 			</div>
 			<div className="mt-2 flex flex-col gap-2">
 				{location.providers.map((provider: any) => (
-					<ProviderItem key={provider.id} provider={provider} />
+					<ProviderItem
+						key={provider.id}
+						provider={provider}
+						location={location}
+					/>
 				))}
 				{location.providers.length === 0 && (
 					<div className="text-sm text-muted-foreground flex items-center gap-4">

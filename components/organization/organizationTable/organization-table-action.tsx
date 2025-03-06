@@ -165,7 +165,13 @@ function _CreateProviderAction({ location }: { location: Location }) {
 	);
 }
 
-function _UpdateProviderAction({ provider }: { provider: Provider }) {
+function _UpdateProviderAction({
+	provider,
+	location,
+}: {
+	provider: Provider;
+	location: Location;
+}) {
 	const [isProviderUpdateModalOpen, setIsProviderUpdateModalOpen] =
 		useState<boolean>(false);
 
@@ -189,6 +195,7 @@ function _UpdateProviderAction({ provider }: { provider: Provider }) {
 				<ProviderUpdateModal
 					open={isProviderUpdateModalOpen}
 					providerId={provider.id}
+					locationId={location.id}
 					onOpenChange={setIsProviderUpdateModalOpen}
 				/>
 			) : (

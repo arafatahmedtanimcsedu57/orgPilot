@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { toast } from 'sonner';
+
 import {
 	Dialog,
 	DialogContent,
@@ -23,7 +25,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
 import {
 	useGetProviderByIdQuery,
@@ -59,14 +60,15 @@ interface ProviderUpdateModalProps {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	providerId: number | null;
+	locationId: number | null;
 }
 
 export function ProviderUpdateModal({
 	open,
 	onOpenChange,
 	providerId,
+	locationId,
 }: ProviderUpdateModalProps) {
-	const { toast } = useToast();
 	const [updateProvider, { isLoading: isUpdating }] =
 		useUpdateProviderMutation();
 
@@ -131,29 +133,27 @@ export function ProviderUpdateModal({
 			const providerData = {
 				...values,
 				logo: null, // We're not handling logo updates in this example
+				location: locationId ? { id: locationId } : null,
 			};
 
 			const result = await updateProvider(providerData).unwrap();
 
 			if (result.success) {
-				toast({
-					title: 'Provider updated',
+				toast.info('Provider updated', {
 					description: 'The provider has been updated successfully',
 				});
 
 				// Close modal
 				onOpenChange(false);
 			} else {
-				toast({
-					variant: 'destructive',
-					title: 'Update failed',
+				toast.error('Update failed', {
+					className: '!bg-destructive',
 					description: result.message || 'Failed to update provider',
 				});
 			}
 		} catch (error: any) {
-			toast({
-				variant: 'destructive',
-				title: 'Error',
+			toast.error('Error', {
+				className: '!bg-destructive',
 				description: error?.data?.message || 'An error occurred',
 			});
 		}

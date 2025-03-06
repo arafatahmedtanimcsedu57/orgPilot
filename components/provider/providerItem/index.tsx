@@ -4,9 +4,15 @@ import { Stethoscope, BadgeInfo } from 'lucide-react';
 import { StatusBadge } from '@/components/ui/status-badge';
 import { UpdateProviderAction } from '../../organization/organizationTable/organization-table-action';
 
-import type { Provider } from '@/types/organization';
+import type { Provider, Location } from '@/types/organization';
 
-export function ProviderItem({ provider }: { provider: Provider }) {
+export function ProviderItem({
+	provider,
+	location,
+}: {
+	provider: Provider;
+	location: Location;
+}) {
 	return (
 		<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex-1">
 			<div className="flex items-center justify-between">
@@ -17,7 +23,7 @@ export function ProviderItem({ provider }: { provider: Provider }) {
 				<div className="flex items-center gap-2">
 					<StatusBadge type={provider.activeStatus ? 'ACTIVE' : 'INACTIVE'} />
 
-					<UpdateProviderAction provider={provider} />
+					<UpdateProviderAction provider={provider} location={location} />
 				</div>
 			</div>
 
