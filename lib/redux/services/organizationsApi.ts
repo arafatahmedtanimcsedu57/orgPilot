@@ -191,7 +191,7 @@ export const organizationsApi = createApi({
 			{
 				name: string;
 				email: string;
-				phone: string;
+				phone?: string;
 				logo: any;
 				specialization: { id: number };
 				activeStatus: boolean;

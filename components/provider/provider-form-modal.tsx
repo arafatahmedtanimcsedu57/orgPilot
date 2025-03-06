@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 import {
 	Dialog,
@@ -30,13 +31,10 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/components/ui/use-toast';
 
 import {
 	useGetSpecializationsQuery,
 	useCreateProviderMutation,
-	useUpdateLocationMutation,
-	useGetLocationByIdQuery,
 } from '@/lib/redux/services/organizationsApi';
 
 const formSchema = z.object({
@@ -69,16 +67,8 @@ export function ProviderFormModal({
 	onOpenChange,
 	locationId,
 }: ProviderFormModalProps) {
-	const { toast } = useToast();
 	const [createProvider, { isLoading: isCreating }] =
 		useCreateProviderMutation();
-	const [updateLocation, { isLoading: isUpdating }] =
-		useUpdateLocationMutation();
-
-	const { data: locationData, refetch: refetchLocation } =
-		useGetLocationByIdQuery(locationId as number, {
-			skip: !locationId,
-		});
 
 	const { data: specializationsData, isLoading: isLoadingSpecializations } =
 		useGetSpecializationsQuery({ page: 0, size: 100 }, { skip: !open });
@@ -102,7 +92,6 @@ export function ProviderFormModal({
 		if (!locationId) return;
 
 		try {
-			// Step 1: Create the provider
 			const providerData = {
 				...values,
 				location: { id: locationId },
@@ -112,70 +101,29 @@ export function ProviderFormModal({
 			const result = await createProvider(providerData).unwrap();
 
 			if (result.success) {
-				// Step 2: Update the location to include the new provider
-				if (locationData?.data) {
-					const newProvider = result.data;
-
-					// Create a copy of the location data
-					const updatedLocation = {
-						...locationData.data,
-						providers: [
-							...(locationData.data.providers || []),
-							{ id: newProvider.id },
-						],
-					};
-
-					try {
-						const updateResult = await updateLocation(updatedLocation).unwrap();
-
-						if (updateResult.success) {
-							toast({
-								title: 'Provider added',
-								description:
-									'The provider has been created and added to the location successfully',
-							});
-
-							// Refetch location data to update the UI
-							refetchLocation();
-						} else {
-							toast({
-								variant: 'destructive',
-								title: 'Warning',
-								description:
-									'Provider created but could not be added to the location',
-							});
-						}
-					} catch (updateError: any) {
-						toast({
-							variant: 'destructive',
-							title: 'Warning',
-							description:
-								'Provider created but could not be added to the location',
-						});
-						console.error('Error updating location:', updateError);
-					}
-				}
+				toast.info('Provider added', {
+					description:
+						'The provider has been created and added to the location successfully',
+				});
 
 				// Reset form and close modal
 				form.reset();
 				onOpenChange(false);
 			} else {
-				toast({
-					variant: 'destructive',
-					title: 'Creation failed',
+				toast.error('Creation failed', {
+					className: '!bg-destructive',
 					description: result.message || 'Failed to create provider',
 				});
 			}
 		} catch (error: any) {
-			toast({
-				variant: 'destructive',
-				title: 'Error',
+			toast.error('Error', {
+				className: '!bg-destructive',
 				description: error?.data?.message || 'An error occurred',
 			});
 		}
 	};
 
-	const isLoading = isCreating || isUpdating || isLoadingSpecializations;
+	const isLoading = isCreating || isLoadingSpecializations;
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
@@ -265,7 +213,7 @@ export function ProviderFormModal({
 										</FormControl>
 										<SelectContent>
 											{specializationsData?.data ? (
-												specializationsData.data.map((specialization) => (
+												specializationsData?.data.map((specialization) => (
 													<SelectItem
 														key={specialization.id}
 														value={specialization.id.toString()}
