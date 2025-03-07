@@ -24,11 +24,7 @@ const navItems = [
 		href: '/dashboard',
 		icon: LayoutDashboard,
 	},
-	{
-		title: 'Profile',
-		href: '/profile',
-		icon: User,
-	},
+	
 	{
 		title: 'Settings',
 		href: '/settings',
@@ -48,10 +44,6 @@ export function AppSidebar() {
 					<Link href="/dashboard" className="relative">
 						<p className="text-xl font-extrabold">OrgPilot</p>
 						<p className="text-xs">Controll your system</p>
-
-						{/* <div className="absolute top-0 -left-4 w-20 h-20 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-						<div className="absolute top-0 -right-4 w-20 h-20 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-						<div className="absolute -bottom-8 left-20 w-20 h-20 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div> */}
 					</Link>
 				</div>
 			</SidebarHeader>

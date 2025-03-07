@@ -1,6 +1,6 @@
 'use client';
 
-import { ShieldEllipsis, User } from 'lucide-react';
+import { ShieldEllipsis, ShieldIcon } from 'lucide-react';
 import { OrganizationLocations } from './organization-locations';
 
 import type { Organization } from '@/types/organization';
@@ -16,11 +16,9 @@ export function OrganizationDetails({ org }: { org: Organization }) {
 					{org.organizationAdmins.length ? (
 						<div className="mt-1 space-y-1">
 							{org.organizationAdmins.map((admin: any, idx: number) => (
-								<div key={idx} className="flex items-center gap-2 text-sm">
-									<div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary">
-										<User className="h-3 w-3" />
-									</div>
-									<span className="font-light text-xs font-mono">
+								<div key={idx} className="flex items-center gap-2">
+									<ShieldIcon className="h-4 w-4 text-primary"  />
+									<span className="font-medium">
 										{admin.email}
 									</span>
 								</div>
