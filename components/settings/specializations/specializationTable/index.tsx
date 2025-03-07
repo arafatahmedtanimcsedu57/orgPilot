@@ -2,15 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { useToast } from '@/components/ui/use-toast';
 import { useGetSpecializationsQuery } from '@/lib/redux/services/organizationsApi';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -18,11 +10,13 @@ import {
 	clearCredentials,
 	selectIsAuthenticated,
 } from '@/lib/redux/features/authSlice';
-import { Plus, Pencil } from 'lucide-react';
 import { DataPagination } from '@/components/ui/data-pagination';
 import { PageSizeSelector } from '@/components/ui/page-size-selector';
-import { SpecializationFormModal } from '@/components/settings/specializations/specialization-form-modal';
-import { SpecializationUpdateModal } from '@/components/settings/specializations/specialization-update-modal';
+import { SpecializationTableHeader } from './specialization-table-header';
+import {
+	CreateSpecializationAction,
+	UpdateSpecializationAction,
+} from './specialization-table-action';
 
 type Specialization = {
 	id: number;
@@ -34,10 +28,6 @@ type Specialization = {
 export function SpecializationsTable() {
 	const [currentPage, setCurrentPage] = useState(0);
 	const [pageSize, setPageSize] = useState(10);
-	const [isFormOpen, setIsFormOpen] = useState(false);
-	const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-	const [selectedSpecialization, setSelectedSpecialization] =
-		useState<Specialization | null>(null);
 
 	const { toast } = useToast();
 	const router = useRouter();
@@ -82,8 +72,9 @@ export function SpecializationsTable() {
 		return <div>Loading...</div>;
 	}
 
-	const specializations = data?.data || [];
-	const totalPages = data?.data?.totalPages || 0;
+	const specializations = data?.data?.content || [];
+	const totalPages = data?.data.totalPages || 0;
+	const totalElements = data?.data.totalElements || 0;
 
 	const handlePageChange = (newPage: number) => {
 		setCurrentPage(newPage);
@@ -92,11 +83,6 @@ export function SpecializationsTable() {
 	const handlePageSizeChange = (newSize: number) => {
 		setPageSize(newSize);
 		setCurrentPage(0); // Reset to first page when changing page size
-	};
-
-	const handleUpdateClick = (specialization: Specialization) => {
-		setSelectedSpecialization(specialization);
-		setIsUpdateModalOpen(true);
 	};
 
 	const formatDate = (dateString: string) => {
@@ -109,30 +95,23 @@ export function SpecializationsTable() {
 
 	return (
 		<div className="space-y-4">
-			<div className="flex items-center justify-between">
-				<div></div>
+			<div className="flex flex-wrap gap-4 items-center justify-between">
+				<div>
+					<p className="text-sm">Total organizations {totalElements}</p>
+					<p className="text-xs text-muted-foreground">
+						{pageSize * currentPage + 1} ~ {pageSize * (currentPage + 1)} of{' '}
+						{totalElements}
+					</p>
+				</div>
+
 				<div className="flex items-center gap-2">
-					<Button
-						onClick={() => setIsFormOpen(true)}
-						className="flex items-center gap-1"
-					>
-						<Plus className="h-4 w-4" />
-						Add Specialization
-					</Button>
+					<CreateSpecializationAction />
 				</div>
 			</div>
 
-			<div className="rounded-md border">
+			<div className="shadow-xl rounded-2xl border border-muted-foreground/10 bg-muted-foreground/10">
 				<Table>
-					<TableHeader>
-						<TableRow>
-							<TableHead>ID</TableHead>
-							<TableHead>NAME</TableHead>
-							<TableHead>CREATED</TableHead>
-							<TableHead>LAST UPDATED</TableHead>
-							<TableHead className="w-20">ACTIONS</TableHead>
-						</TableRow>
-					</TableHeader>
+					<SpecializationTableHeader />
 					<TableBody>
 						{specializations.map((specialization) => (
 							<TableRow key={specialization.id} className="hover:bg-muted/50">
@@ -157,14 +136,7 @@ export function SpecializationsTable() {
 									</span>
 								</TableCell>
 								<TableCell>
-									<Button
-										variant="ghost"
-										size="icon"
-										onClick={() => handleUpdateClick(specialization)}
-										className="h-8 w-8"
-									>
-										<Pencil className="h-4 w-4" />
-									</Button>
+									<UpdateSpecializationAction specialization={specialization} />
 								</TableCell>
 							</TableRow>
 						))}
@@ -198,13 +170,6 @@ export function SpecializationsTable() {
 					/>
 				</div>
 			</div>
-
-			<SpecializationFormModal open={isFormOpen} onOpenChange={setIsFormOpen} />
-			<SpecializationUpdateModal
-				open={isUpdateModalOpen}
-				onOpenChange={setIsUpdateModalOpen}
-				specialization={selectedSpecialization}
-			/>
 		</div>
 	);
 }

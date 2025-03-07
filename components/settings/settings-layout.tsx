@@ -26,11 +26,6 @@ const settingsNavItems = [
 		href: '/dashboard',
 		icon: Building2,
 	},
-	{
-		title: 'Users',
-		href: '/settings/users',
-		icon: Users,
-	},
 ];
 
 export function SettingsLayout({ children }: SettingsLayoutProps) {

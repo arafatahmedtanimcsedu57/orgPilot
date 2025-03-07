@@ -236,7 +236,7 @@ export const organizationsApi = createApi({
 
 		// Specialization
 		getSpecializations: builder.query<
-			ApiResponse<SpecializationResponse<Specialization>>,
+			ApiResponse<PaginatedResponse<Specialization>>,
 			{ page: number; size: number }
 		>({
 			query: ({ page, size }) => `/specialization?page=${page}&size=${size}`,

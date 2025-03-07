@@ -212,16 +212,19 @@ export function ProviderFormModal({
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											{specializationsData?.data ? (
-												specializationsData?.data.map((specialization) => (
-													<SelectItem
-														key={specialization.id}
-														value={specialization.id.toString()}
-													>
-														{specialization.name ||
-															`Specialization #${specialization.id}`}
-													</SelectItem>
-												))
+											{specializationsData?.data?.content &&
+											specializationsData?.data?.content.length ? (
+												specializationsData?.data?.content.map(
+													(specialization) => (
+														<SelectItem
+															key={specialization.id}
+															value={specialization.id.toString()}
+														>
+															{specialization.name ||
+																`Specialization #${specialization.id}`}
+														</SelectItem>
+													),
+												)
 											) : (
 												<SelectItem value="0" disabled>
 													Loading specializations...
