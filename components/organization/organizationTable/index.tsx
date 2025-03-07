@@ -5,11 +5,9 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { FolderOpenDotIcon } from 'lucide-react';
 
-import { OrganizationTableHeader } from './organization-table-header';
 import { OrganizationRow } from './organizationRow';
 import { CreateOrganizationAction } from './organization-table-action';
 
-import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import { DataPagination } from '@/components/ui/data-pagination';
 import { PageSizeSelector } from '@/components/ui/page-size-selector';
 
@@ -77,41 +75,29 @@ export function OrganizationTable() {
 	if (isLoading) return <div>Loading...</div>;
 
 	return (
-		<div className="space-y-4">
-			<div className="flex flex-wrap gap-4 items-center justify-between">
+		<div>
+			<div className="flex flex-wrap gap-4 items-center justify-between mb-6">
 				<div>
-					<p className="text-sm">Total organizations {totalElements}</p>
-					<p className="text-xs text-muted-foreground">
-						{pageSize * currentPage + 1} ~ {pageSize * (currentPage + 1)} of{' '}
-						{totalElements}
+					<p className="text-sm text-muted-foreground">
+						Showing {pageSize * currentPage + 1} ~{' '}
+						{pageSize * (currentPage + 1)} of {totalElements}
 					</p>
 				</div>
 
-				<div className="flex items-center gap-2">
+				<div className="flex items-center flex-wrap gap-4">
+					<p className="text-sm">Total organizations {totalElements}</p>
 					<CreateOrganizationAction />
 				</div>
 			</div>
 
-			<div className="shadow-xl rounded-2xl border border-muted-foreground/10 bg-muted-foreground/10">
-				<Table>
-					<OrganizationTableHeader />
-
-					<TableBody>
-						{organizations.length ? (
-							organizations.map((org) => (
-								<OrganizationRow key={org.id} org={org} />
-							))
-						) : (
-							<TableRow>
-								<TableCell colSpan={7} className="h-24">
-									<div className="text-sm text-muted-foreground flex items-center gap-4 justify-center">
-										<FolderOpenDotIcon /> No organization found
-									</div>
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
+			<div className="mb-6 flex flex-col gap-2 p-6 shadow-xl rounded-2xl border border-muted-foreground/10 bg-muted-foreground/10">
+				{organizations.length ? (
+					organizations.map((org) => <OrganizationRow key={org.id} org={org} />)
+				) : (
+					<div className="text-sm text-muted-foreground flex  items-center gap-4 justify-center">
+						<FolderOpenDotIcon /> No organization found
+					</div>
+				)}
 			</div>
 
 			<div className="flex flex-wrap gap-4 items-center justify-between">

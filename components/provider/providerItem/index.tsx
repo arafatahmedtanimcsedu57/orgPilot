@@ -1,5 +1,11 @@
 'use client';
-import { Stethoscope, BadgeInfo } from 'lucide-react';
+import {
+	Stethoscope,
+	BadgeInfo,
+	MailIcon,
+	PhoneCall,
+	MailCheck,
+} from 'lucide-react';
 
 import { StatusBadge } from '@/components/ui/status-badge';
 import { UpdateProviderAction } from '../../organization/organizationTable/organization-table-action';
@@ -14,30 +20,57 @@ export function ProviderItem({
 	location: Location;
 }) {
 	return (
-		<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex-1">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<Stethoscope className="h-4 w-4 text-primary" />
-					<span className="font-medium">{provider.name}</span>
-				</div>
-				<div className="flex items-center gap-2">
-					<StatusBadge type={provider.activeStatus ? 'ACTIVE' : 'INACTIVE'} />
+		<div className="shadow-xl border border-muted-foreground/10 bg-muted-foreground/10 flex flex-col rounded-2xl overflow-hidden">
+			<div className="flex items-center flex-wrap gap-6 p-6 w-full">
+				<></>
 
-					<UpdateProviderAction provider={provider} location={location} />
-				</div>
-			</div>
+				<div className="flex justify-between items-center gap-6 flex-1 ">
+					<div className="flex items-center gap-4">
+						<div className="relative flex min-h-6 min-w-6 max-h-fit items-center justify-center rounded-full bg-muted/40">
+							<Stethoscope className="h-3 w-3" />
+						</div>
 
-			<div className="pl-6 text-xs flex flex-col gap-1">
-				<p className="text-muted-foreground">Email: {provider.email}</p>
-				<p className="text-muted-foreground">Phone: {provider.phone}</p>
-				{provider.specialization && (
-					<div className="flex items-center gap-1">
-						<BadgeInfo className="h-3 w-3 text-muted-foreground" />
-						<span>
-							Specialization: {provider.specialization.name || 'Not specified'}
-						</span>
+						<div className="flex flex-col flex-wrap">
+							<div className="flex flex-wrap gap-2 items-center">
+								<p className="text-sm font-semibold">{provider.name}</p>
+
+								{provider.specialization && (
+									<div className="flex items-center gap-1">
+										<BadgeInfo className="h-3 w-3 text-muted-foreground" />
+										<p className="text-xs font-normal text-muted-foreground">
+											{provider.specialization.name || 'Not specified'}
+										</p>
+										<StatusBadge
+											type={provider.activeStatus ? 'ACTIVE' : 'INACTIVE'}
+										/>
+									</div>
+								)}
+							</div>
+
+							<div className="flex items-center flex-wrap gap-2">
+								{provider.email ? (
+									<div className="text-muted-foreground flex gap-1 items-center">
+										<MailCheck className="h-3 w-3" />
+										<p className=" text-xs">{provider.email}</p>
+									</div>
+								) : (
+									<></>
+								)}
+								{provider.phone ? (
+									<div className="text-muted-foreground flex gap-1 items-center">
+										<PhoneCall className="h-3 w-3" />
+										<p className="text-xs">{provider.phone}</p>
+									</div>
+								) : (
+									<></>
+								)}
+							</div>
+						</div>
 					</div>
-				)}
+					<UpdateProviderAction provider={provider} location={location} />
+
+					<></>
+				</div>
 			</div>
 		</div>
 	);

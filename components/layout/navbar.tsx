@@ -20,6 +20,7 @@ import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useLogoutMutation } from '@/lib/redux/services/authApi';
 import { useAppSelector, useAppDispatch } from '@/lib/redux/hooks';
 import { clearCredentials } from '@/lib/redux/features/authSlice';
+import { Input } from '../ui/input';
 
 export function Navbar() {
 	const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
@@ -56,15 +57,21 @@ export function Navbar() {
 
 	return (
 		<header className="sticky top-0 z-10 flex h-16 items-center gap-4 px-4 border border-muted-foreground/10 bg-muted-foreground/10 m-6 rounded-2xl">
-			<div className="border border-muted-foreground/10 bg-muted-foreground/10 rounded-full h-10 w-10 flex items-center justify-center">
+			<div className="border border-muted-foreground/10 bg-muted-foreground/10 rounded-full min-h-10 min-w-10 flex items-center justify-center">
 				<SidebarTrigger className="hover:bg-transparent" />
 			</div>
 
-			<div className="relative hidden flex-1 md:flex"></div>
+			<div className="relative hidden flex-1 md:flex">
+				<Input
+					className="min-w-[150px] max-w-[500px] bg-muted border border-muted-foreground/20"
+					placeholder="Search"
+				/>
+			</div>
 
-			<div className="ml-auto flex items-center gap-2">
+			<div className="ml-auto flex  items-center gap-2">
 				<ThemeToggle />
 
+				<div className="ms-2 text-sm whitespace-nowrap">Welcome Back ,</div>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
 						<Button variant="outline" className="relative h-8 w-8 rounded-full">
