@@ -7,6 +7,7 @@ import type {
 	Location,
 	Organization,
 } from '@/types/organization';
+import type { Appointment } from '@/types/appointment';
 
 type ApiResponse<T> = {
 	success: boolean;
@@ -54,6 +55,7 @@ export const organizationsApi = createApi({
 		'Provider',
 		'Specializations',
 		'Specialization',
+		'Appointments',
 	],
 
 	endpoints: (builder) => ({
@@ -287,6 +289,31 @@ export const organizationsApi = createApi({
 			}),
 		}),
 		// Multimedia
+
+		// Appointments
+		getOrgAppointments: builder.query<
+			ApiResponse<PaginatedResponse<Appointment>>,
+			{
+				page: number;
+				size: number;
+				id: number;
+				startDate?: string;
+				endDate?: string;
+			}
+		>({
+			query: ({
+				page,
+				size,
+				id,
+				startDate = '2021-02-07T00:00:00Z',
+				endDate = '2025-03-07T23:59:59Z',
+			}) =>
+				`/appointment/internal-dashboard-appointment?startDate=${startDate}&endDate=${endDate}&page=${page}&size=${size}/${id}`,
+			providesTags: (result, error, arg) => [
+				{ type: 'Appointments', id: arg.id },
+			],
+		}),
+		//Appointments
 	}),
 });
 
@@ -307,4 +334,5 @@ export const {
 	useGetOrganizationByIdQuery,
 	useCreateSpecializationMutation,
 	useUpdateSpecializationMutation,
+	useGetOrgAppointmentsQuery,
 } = organizationsApi;

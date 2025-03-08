@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { ChevronDown, ChevronRight, MapPin, Building2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, Building2, InfoIcon } from 'lucide-react';
 
 import { OrganizationDetails } from './organization-details';
 import { UpdateOrganizationAction } from '../organization-table-action';
@@ -12,6 +12,7 @@ import { StatusBadge } from '@/components/ui/status-badge';
 
 import { cn } from '@/lib/utils';
 import type { Organization } from '@/types/organization';
+import { OrganizationAppointments } from './organization-appointments';
 
 export function OrganizationRow({ org }: { org: Organization }) {
 	const [expanded, setExpanded] = useState<boolean>(false);
@@ -65,18 +66,19 @@ export function OrganizationRow({ org }: { org: Organization }) {
 								<StatusBadge type={org.active ? 'ACTIVE' : 'INACTIVE'} />
 							</div>
 							{org.locations.length ? (
-								<span className="flex text-xs font-light items-center gap-1">
+								<div className="flex text-xs font-light items-center gap-1">
 									{org.locations.length > 1 ? (
-										<span>
-											This organization is located in {org.locations.length}{' '}
-											different places
+										<span className="inline-flex items-center gap-1">
+											<InfoIcon className="h-3 w-3" /> This organization is
+											located in {org.locations.length} different places
 										</span>
 									) : (
-										<span className="text-muted-foreground">
+										<span className="text-muted-foreground inline-flex items-center gap-1">
+											<InfoIcon className="h-3 w-3" />
 											This organization is located in a single place
 										</span>
 									)}
-								</span>
+								</div>
 							) : (
 								<></>
 							)}
@@ -89,7 +91,11 @@ export function OrganizationRow({ org }: { org: Organization }) {
 
 			{expanded && (
 				<div className="bg-muted-foreground/10 flex-auto">
-					<OrganizationDetails org={org} />
+					<div className="flex flex-wrap p-6 gap-6">
+						<OrganizationDetails org={org} />
+
+						<OrganizationAppointments org={org} />
+					</div>
 				</div>
 			)}
 		</div>

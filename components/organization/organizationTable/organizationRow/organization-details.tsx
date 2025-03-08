@@ -1,18 +1,33 @@
 'use client';
 
-import { ShieldEllipsis, ShieldIcon } from 'lucide-react';
+import { InfoIcon, ShieldEllipsis, ShieldIcon } from 'lucide-react';
 import { OrganizationLocations } from './organization-locations';
 
 import type { Organization } from '@/types/organization';
 
 export function OrganizationDetails({ org }: { org: Organization }) {
 	return (
-		<div className="p-6 flex flex-col gap-6 flex-wrap justify-between">
+		<div className="flex flex-col gap-6 flex-wrap flex-1">
 			<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
 				<div className="flex items-center justify-between">
 					<h5 className="text-xs font-medium text-muted-foreground">
-						Administrators ({org.organizationAdmins.length})
+						Administrators
 					</h5>
+					{!org.organizationAdmins.length ? (
+						<span className="text-xs inline-flex gap-1 items-center text-destructive ">
+							<InfoIcon className="h-3 w-3" /> Admins are not assigned here yet
+						</span>
+					) : org.organizationAdmins.length > 1 ? (
+						<span className="text-xs inline-flex gap-1 items-center">
+							<InfoIcon className="h-3 w-3" />
+							{org.organizationAdmins.length} admins are assigned here
+						</span>
+					) : (
+						<span className="text-xs inline-flex gap-1 items-center text-orange-600">
+							<InfoIcon className="h-3 w-3" />
+							One admin single-handedly handles it
+						</span>
+					)}
 				</div>
 
 				<div className="flex flex-col gap-2 ">

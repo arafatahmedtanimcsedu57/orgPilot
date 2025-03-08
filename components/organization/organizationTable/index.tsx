@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { FolderOpenDotIcon } from 'lucide-react';
+import { FolderOpenDotIcon, InfoIcon } from 'lucide-react';
 
 import { OrganizationRow } from './organizationRow';
 import { CreateOrganizationAction } from './organization-table-action';
@@ -85,7 +85,9 @@ export function OrganizationTable() {
 				</div>
 
 				<div className="flex items-center flex-wrap gap-4">
-					<p className="text-sm">Total organizations {totalElements}</p>
+					<p className="text-sm inline-flex items-center gap-2">
+						<InfoIcon className="h-4 w-4" /> Total organizations {totalElements}
+					</p>
 					<CreateOrganizationAction />
 				</div>
 			</div>

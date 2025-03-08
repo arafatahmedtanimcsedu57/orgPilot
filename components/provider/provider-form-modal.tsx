@@ -64,8 +64,8 @@ interface ProviderFormModalProps {
 
 export function ProviderFormModal({
 	open,
-	onOpenChange,
 	locationId,
+	onOpenChange,
 }: ProviderFormModalProps) {
 	const [createProvider, { isLoading: isCreating }] =
 		useCreateProviderMutation();
