@@ -66,20 +66,24 @@ export function OrganizationAppointments({ org }: { org: Organization }) {
 				</h5>
 
 				<div className="flex gap-4">
-					{!data?.totalElements ? (
-						<span className="text-xs inline-flex gap-1 items-center text-destructive ">
-							<InfoIcon className="h-3 w-3" /> No appointment yet
-						</span>
-					) : (data?.totalElements || 0) > 1 ? (
-						<span className="text-xs inline-flex gap-1 items-center">
-							<InfoIcon className="h-3 w-3" />
-							This organization has {data?.totalElements} appointments
-						</span>
+					{!isFetching ? (
+						!data?.totalElements ? (
+							<span className="text-xs inline-flex gap-1 items-center text-destructive ">
+								<InfoIcon className="h-3 w-3" /> No appointment yet
+							</span>
+						) : (data?.totalElements || 0) > 1 ? (
+							<span className="text-xs inline-flex gap-1 items-center">
+								<InfoIcon className="h-3 w-3" />
+								This organization has {data?.totalElements} appointments
+							</span>
+						) : (
+							<span className="text-xs inline-flex gap-1 items-center text-orange-600">
+								<InfoIcon className="h-3 w-3" />
+								This organization has a single appointments
+							</span>
+						)
 					) : (
-						<span className="text-xs inline-flex gap-1 items-center text-orange-600">
-							<InfoIcon className="h-3 w-3" />
-							This organization has a single appointments
-						</span>
+						<>Loading...</>
 					)}
 
 					<Popover open={isFilterOpen} onOpenChange={setIsFilterOpen}>
@@ -127,40 +131,45 @@ export function OrganizationAppointments({ org }: { org: Organization }) {
 				</div>
 			</div>
 
-			<Card className="shadow-xl bg-muted-foreground/10 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
-				<CardContent className="p-6">
-					{data?.content && data.content.length > 0 ? (
-						<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
-							{data.content.map((appointment: Appointment, index: number) => (
-								<div
-									key={index}
-									className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6"
-								>
-									<div className="flex justify-between items-center">
-										<div>
-											<p className="font-medium">
-												{appointment.name.first} {appointment.name.last}
-											</p>
-											<p className="text-sm text-muted-foreground">
-												{appointment.appointmentDate &&
-													format(
-														new Date(appointment.appointmentDate),
-														'PPP p',
-													)}
-											</p>
-										</div>
-										{/* <StatusBadge type={appointment.status || 'SCHEDULED'} /> */}
-									</div>
+			<Card className="max-h-[500px] overflow-auto min-w-fit shadow-xl bg-muted-foreground/10 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
+				<CardContent className="p-6 min-w-fit">
+					{!isFetching ? (
+						<>
+							{data?.content && data.content.length > 0 ? (
+								<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
+									{data.content.map(
+										(appointment: Appointment, index: number) => (
+											<div
+												key={index}
+												className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6"
+											>
+												<div className="flex justify-between items-center">
+													<div>
+														<p className="font-medium">
+															{appointment.name.first} {appointment.name.last}
+														</p>
+														<p className="text-sm text-muted-foreground">
+															{appointment.appointmentDate &&
+																format(
+																	new Date(appointment.appointmentDate),
+																	'PPP p',
+																)}
+														</p>
+													</div>
+												</div>
+											</div>
+										),
+									)}
 								</div>
-							))}
-						</div>
+							) : (
+								<div className="text-sm text-muted-foreground flex items-center gap-4">
+									<Calendar className="min-h-6 min-w-6 text-muted-foreground" />
+									No appointments found for the selected date range
+								</div>
+							)}
+						</>
 					) : (
-						<div className="flex flex-col items-center justify-center py-8 text-center">
-							<Calendar className="h-12 w-12 text-muted-foreground mb-2" />
-							<p className="text-muted-foreground">
-								No appointments found for the selected date range
-							</p>
-						</div>
+						<>Loading...</>
 					)}
 				</CardContent>
 			</Card>

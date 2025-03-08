@@ -9,7 +9,7 @@ import type { Organization } from '@/types/organization';
 
 export function OrganizationLocations({ org }: { org: Organization }) {
 	return (
-		<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
+		<div className="flex-1 shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
 			<div className="flex items-center gap-6 justify-between">
 				<h5 className="text-xs font-medium text-muted-foreground">Locations</h5>
 
