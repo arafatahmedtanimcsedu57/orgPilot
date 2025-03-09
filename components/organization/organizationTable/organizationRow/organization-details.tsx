@@ -9,7 +9,7 @@ export function OrganizationDetails({ org }: { org: Organization }) {
 	return (
 		<div className="flex flex-col gap-6 flex-wrap flex-1">
 			<div className="shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
-				<div className="flex items-center justify-between">
+				<div className="flex flex-wrap gap-6 items-center justify-between">
 					<h5 className="text-xs font-medium text-muted-foreground">
 						Administrators
 					</h5>

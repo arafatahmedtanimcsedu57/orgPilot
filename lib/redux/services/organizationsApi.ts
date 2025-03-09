@@ -308,7 +308,7 @@ export const organizationsApi = createApi({
 				startDate = '2021-02-07T00:00:00Z',
 				endDate = '2025-03-07T23:59:59Z',
 			}) =>
-				`/appointment/internal-dashboard-appointment?startDate=${startDate}&endDate=${endDate}&page=${page}&size=${size}/${id}`,
+				`/appointment/internal-dashboard-appointment?startDate=${startDate}&endDate=${endDate}&page=${page}&size=${size}&organizationId=${id}`,
 			providesTags: (result, error, arg) => [
 				{ type: 'Appointments', id: arg.id },
 			],

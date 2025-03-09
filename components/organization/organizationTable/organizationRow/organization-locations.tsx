@@ -10,10 +10,10 @@ import type { Organization } from '@/types/organization';
 export function OrganizationLocations({ org }: { org: Organization }) {
 	return (
 		<div className="flex-1 shadow-xl bg-muted-foreground/10 p-6 rounded-2xl border border-muted-foreground/10 flex flex-col gap-6">
-			<div className="flex items-center gap-6 justify-between">
+			<div className="flex flex-wrap items-center gap-6 justify-between">
 				<h5 className="text-xs font-medium text-muted-foreground">Locations</h5>
 
-				<div className="flex gap-4">
+				<div className="flex flex-wrap gap-4">
 					{!org.locations.length ? (
 						<span className="text-xs inline-flex gap-1 items-center text-destructive ">
 							<InfoIcon className="h-3 w-3" /> Location is not found

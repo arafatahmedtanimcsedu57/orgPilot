@@ -40,7 +40,7 @@ export function OrganizationRow({ org }: { org: Organization }) {
 					)}
 				</Button>
 
-				<div className="flex justify-between items-center gap-6 flex-1 ">
+				<div className="flex flex-wrap justify-between items-center gap-6 flex-1 ">
 					<div className="flex items-center gap-2">
 						{org.multimediaFile ? (
 							<div className="relative min-h-8 min-w-8 max-h-fit overflow-hidden rounded-full">
